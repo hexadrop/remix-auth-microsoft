@@ -13,13 +13,11 @@
 | Node.js    | ✅           |
 | Cloudflare | ✅           |
 
-
 ## How to use
 
 ### Create an OAuth application
 
 Follow the steps on [the Microsoft documentation](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) to create a new App Registration. You should select **Web** as the platform, configure a **Redirect URI** and add a client secret.
-
 
 > [!TIP]
 > If you want to support login with both personal Microsoft accounts and school/work accounts, you might need to configure the supported account types by editing the manifest file. Set `signInAudience` value to `MicrosoftADandPersonalMicrosoftAccount` to allow login also with personal accounts.
@@ -38,25 +36,25 @@ npm install @hexadrop/remix-auth-microsoft remix-auth remix-auth-oauth2"
 
 ```ts
 // app/services/auth.server.ts
-import { MicrosoftStrategy } from "remix-auth-microsoft";
-import { Authenticator } from "remix-auth";
+import { Authenticator } from 'remix-auth';
+import { MicrosoftStrategy } from 'remix-auth-microsoft';
 
-export let authenticator = new Authenticator<User>(); //User is a custom user types you can define as you want
+const authenticator = new Authenticator<User>(); // User is a custom user types you can define as you want
 
-let microsoftStrategy = new MicrosoftStrategy(
+const microsoftStrategy = new MicrosoftStrategy(
   {
-    clientId: "YOUR_CLIENT_ID",
-    clientSecret: "YOUR_CLIENT_SECRET",
-    redirectURI: "https://example.com/auth/microsoft/callback",
-    tenantId: "YOUR_TENANT_ID", // optional - necessary for organization without multitenant (see below)
-    scopes: ["openid", "profile", "email"], // optional
-    prompt: "login", // optional
+    clientId: 'YOUR_CLIENT_ID',
+    clientSecret: 'YOUR_CLIENT_SECRET',
+    prompt: 'login', // optional
+    redirectURI: 'https://example.com/auth/microsoft/callback',
+    scopes: ['openid', 'profile', 'email'], // optional
+    tenantId: 'YOUR_TENANT_ID', // optional - necessary for organization without multitenant (see below)
   },
   async ({ request, tokens }) => {
     // Here you can fetch the user from database or return a user object based on profile
-    let accessToken = tokens.accessToken();
-    let idToken = tokens.idToken();
-    let profile = await MicrosoftStrategy.userProfile(accessToken);
+    const accessToken = tokens.accessToken();
+    const idToken = tokens.idToken();
+    const profile = await MicrosoftStrategy.userProfile(accessToken);
 
     // The returned object is stored in the session storage you are using by the authenticator
 
@@ -75,6 +73,8 @@ let microsoftStrategy = new MicrosoftStrategy(
 );
 
 authenticator.use(microsoftStrategy);
+
+export default authenticator;
 ```
 
 See [Microsoft docs](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow) for more information on `scope` and `prompt` parameters.
