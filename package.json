@@ -57,7 +57,7 @@
 		"@changesets/cli": "2.27.11",
 		"@hexadrop/eslint-config": "0.0.2",
 		"@hexadrop/tsconfig": "0.0.5",
-		"@types/bun": "1.1.16",
+		"@types/bun": "1.1.17",
 		"eslint": "9.18.0",
 		"remix-auth": "4.1.0",
 		"remix-auth-oauth2": "3.2.2",
